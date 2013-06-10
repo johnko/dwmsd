@@ -20,7 +20,7 @@
 void error(char *msg)
 {
     perror(msg);
-    exit(0);
+    exit(1);
 }
 
 int main(int argc, char *argv[])
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     /*
     if (argc < 3) {
        fprintf(stderr,"usage %s hostname port\n", argv[0]);
-       exit(0);
+       exit(1);
     }
     */
     //portno = atoi(argv[2]);
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     server = gethostbyname("127.0.0.1");
     if (server == NULL) {
         fprintf(stderr,"ERROR, no such host\n");
-        exit(0);
+        exit(1);
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
@@ -69,6 +69,6 @@ int main(int argc, char *argv[])
     n = read(sockfd,buffer,255);
     if (n < 0) 
          error("ERROR reading from socket");
-    //printf("%s\n",buffer);
+    printf("%s\n",buffer);
     return 0;
 }
