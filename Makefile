@@ -70,7 +70,7 @@ clean:
 dist: clean
 	@echo creating dist tarball
 	@mkdir -p dwmsd-${VERSION}
-	@cp -R Makefile config.mk \
+	@cp -R Makefile ${CONFIGMK} \
 		${SRV} ${SRC} dwmsd-${VERSION}
 	@tar -cf dwmsd-${VERSION}.tar dwmsd-${VERSION}
 	@gzip dwmsd-${VERSION}.tar
