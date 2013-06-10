@@ -8,6 +8,7 @@
 **
 */
 #define _BSD_SOURCE
+#define PORT "57475"
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
@@ -23,7 +24,7 @@ void error(char *msg)
     exit(1);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) //provided by http://www.cs.rpi.edu/~moorthy/Courses/os98/Pgms/socket.html
 {
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
@@ -36,12 +37,12 @@ int main(int argc, char *argv[])
     }
     */
     //portno = atoi(argv[2]);
-    portno = atoi("57475");
+    portno = atoi(PORT); //default port
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) 
         error("ERROR opening socket");
     //server = gethostbyname(argv[1]);
-    server = gethostbyname("127.0.0.1");
+    server = gethostbyname("127.0.0.1"); //localhost
     if (server == NULL) {
         fprintf(stderr,"ERROR, no such host\n");
         exit(1);
@@ -64,11 +65,11 @@ int main(int argc, char *argv[])
     }
     n = write(sockfd,buffer,strlen(buffer));
     if (n < 0) 
-         error("ERROR writing to socket");
+        error("ERROR writing to socket");
     bzero(buffer,256);
     n = read(sockfd,buffer,255);
     if (n < 0) 
-         error("ERROR reading from socket");
+        error("ERROR reading from socket");
     printf("%s\n",buffer);
     return 0;
 }
