@@ -35,10 +35,8 @@ endif
 
 include ${CONFIGMK}
 
-SRV = dwmsd.c
-OBJ = ${SRV:.c=.o}
-SRC = dwmsc.c
-OBJC = ${SRC:.c=.o}
+SRC = dwmsd.c dwmsc.c
+OBJ = ${SRC:.c=.o}
 
 all: options dwmsd dwmsc
 
@@ -49,35 +47,34 @@ options:
 	@echo "CC       = ${CC}"
 
 .c.o:
-	@echo CC $<
+	@echo CC -c $<
 	@${CC} -c ${CFLAGS} $<
 
 ${OBJ}: ${CONFIGMK}
-${OBJC}: ${CONFIGMK}
 
 dwmsd: ${OBJ}
 	@echo CC -o $@
-	@${CC} -o $@ ${OBJ} ${LDFLAGS}
+	@${CC} -o $@ dwmsd.o ${LDFLAGS}
 
-dwmsc: ${OBJC}
+dwmsc: ${OBJ}
 	@echo CC -o $@
-	@${CC} -o $@ ${OBJC} ${LDFLAGS}
+	@${CC} -o $@ dwmsc.o ${LDFLAGS}
 
 clean:
 	@echo cleaning
-	@rm -f dwmsd dwmsc ${OBJ} ${OBJC} dwmsd-${VERSION}.tar.gz
+	@rm -f dwmsd dwmsc ${OBJ} dwmsd-${VERSION}.tar.gz
 
 dist: clean
 	@echo creating dist tarball
 	@mkdir -p dwmsd-${VERSION}
 	@cp -R Makefile ${CONFIGMK} \
-		${SRV} ${SRC} dwmsd-${VERSION}
+		${SRC} dwmsd-${VERSION}
 	@tar -cf dwmsd-${VERSION}.tar dwmsd-${VERSION}
 	@gzip dwmsd-${VERSION}.tar
 	@rm -rf dwmsd-${VERSION}
 
 install: all
-	@echo installing executable file to ${DESTDIR}${PREFIX}/bin
+	@echo installing executables to ${DESTDIR}${PREFIX}/bin
 	@mkdir -p ${DESTDIR}${PREFIX}/bin
 	@cp -f dwmsd ${DESTDIR}${PREFIX}/bin
 	@chmod 755 ${DESTDIR}${PREFIX}/bin/dwmsd
@@ -85,7 +82,7 @@ install: all
 	@chmod 755 ${DESTDIR}${PREFIX}/bin/dwmsc
 
 uninstall:
-	@echo removing executable file from ${DESTDIR}${PREFIX}/bin
+	@echo removing executables from ${DESTDIR}${PREFIX}/bin
 	@rm -f ${DESTDIR}${PREFIX}/bin/dwmsd
 	@rm -f ${DESTDIR}${PREFIX}/bin/dwmsc
 
