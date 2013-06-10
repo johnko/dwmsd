@@ -71,6 +71,6 @@ int main(int argc, char *argv[]) //provided by http://www.cs.rpi.edu/~moorthy/Co
     n = read(sockfd,buffer,255);
     if (n < 0) 
         error("ERROR reading from socket");
-    printf("%s\n",buffer);
+    //printf("%s\n",buffer);
     return 0;
 }
