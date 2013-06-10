@@ -8,6 +8,7 @@
 **
 */
 #define _BSD_SOURCE
+#define PORT "57475"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +29,7 @@ void error(char *msg)
 }
 
 char *
-smprintf(char *fmt, ...)
+smprintf(char *fmt, ...) //provided by dwmstatus on suckless
 {
     va_list fmtargs;
     char *ret;
@@ -47,13 +48,27 @@ smprintf(char *fmt, ...)
     return ret;
 }
 
-void setstatus(char *str)
+void trim(char *str) //provided by AndiDog on stackoverflow
+{
+    char *ptr = str;
+    while(*ptr == ' ' || *ptr == '\t' || *ptr == '\r' || *ptr == '\n') ++ptr;
+    char *end = ptr;
+    while(*end) ++end;
+    if (end > ptr)
+    {
+        for(--end; end >= ptr && (*end == ' ' || *end == '\t' || *end == '\r' || *end == '\n'); --end);
+    }
+    memmove(str, ptr, end-ptr);
+    str[end-ptr+1] = 0; //fixed by johnko
+} 
+
+void setstatus(char *str) //provided by dwmstatus on suckless
 {
     XStoreName(dpy, DefaultRootWindow(dpy), str);
     XSync(dpy, False);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) //provided by http://www.cs.rpi.edu/~moorthy/Courses/os98/Pgms/socket.html
 {
     int sockfd, newsockfd, portno, clilen, n;
     char buffer[256];
@@ -74,10 +89,10 @@ int main(int argc, char *argv[])
         error("ERROR opening socket");
     bzero((char *) &serv_addr, sizeof(serv_addr));
     //portno = atoi(argv[1]);
-    portno = atoi("57475");
+    portno = atoi(PORT); //default port
     serv_addr.sin_family = AF_INET;
     //serv_addr.sin_addr.s_addr = INADDR_ANY;
-    serv_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    serv_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK); //Loopback to be safe!!
     serv_addr.sin_port = htons(portno);
     if (bind(sockfd, (struct sockaddr *) &serv_addr,
         sizeof(serv_addr)) < 0) 
@@ -93,6 +108,7 @@ int main(int argc, char *argv[])
         n = read(newsockfd,buffer,255);
         if (n < 0) error("ERROR reading from socket");
         //printf("Here is the message: %s\n",buffer);
+        trim(buffer);
         status = smprintf("%s",buffer);
         setstatus(status);
         n = write(newsockfd,"OK",2);
