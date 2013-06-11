@@ -4,7 +4,7 @@ VERSION = 6.0
 # Customize below to fit your system
 
 # paths
-PREFIX = /usr/local 
+PREFIX = /usr/local
 MANPREFIX = /usr/local/man
 
 X11INC = /usr/local/include
