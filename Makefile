@@ -76,11 +76,9 @@ dist: clean
 
 install: all
 	@echo installing executables to ${DESTDIR}${PREFIX}/bin
-	@mkdir -p ${DESTDIR}${PREFIX}/bin
-	@cp -f dwmsd ${DESTDIR}${PREFIX}/bin
-	@chmod 755 ${DESTDIR}${PREFIX}/bin/dwmsd
-	@cp -f dwmsc ${DESTDIR}${PREFIX}/bin
-	@chmod 755 ${DESTDIR}${PREFIX}/bin/dwmsc
+	@install -d -m 0755 ${DESTDIR}${PREFIX}/bin
+	@install -m 0755 dwmsd      ${DESTDIR}${PREFIX}/bin/
+	@install -m 0755 dwmsc      ${DESTDIR}${PREFIX}/bin/
 
 uninstall:
 	@echo removing executables from ${DESTDIR}${PREFIX}/bin
