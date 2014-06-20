@@ -62,7 +62,8 @@ int main(int argc, char *argv[]) //provided by http://www.cs.rpi.edu/~moorthy/Co
         fgets(buffer,255,stdin);
     }
     else {
-        sscanf(argv[1],"%s",buffer);
+        for (int i = 1, len = 0; i < argc; i++)
+          len += snprintf (&buffer[len],sizeof(buffer)-len, "%s ", argv[i]);
     }
     n = write(sockfd,buffer,strlen(buffer));
     if (n < 0) 
