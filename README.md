@@ -8,8 +8,7 @@ dwmsd listens on 127.0.0.1:57475, and passes strings to XStoreName
 dwmsc passes strings to 127.0.0.1:57475
 
 ### Convenience
-* you can: `uptime | dwmsc`
-* dwmsc "hello world"
+* you can: `uptime | dwmsc` or `dwmsc "hello world"`
 
 ### Thanks to
 * http://dwm.suckless.org
